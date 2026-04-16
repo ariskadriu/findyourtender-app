@@ -6,13 +6,17 @@ let adminApp: App;
 
 function getAdminApp(): App {
   if (getApps().length === 0) {
-    const keyString = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-    if (!keyString || keyString === '{}') {
-      adminApp = initializeApp({ projectId: 'dummy' });
-    } else {
-      adminApp = initializeApp({
-        credential: cert(JSON.parse(keyString)),
-      });
+    try {
+      const keyString = process.env.FIREBASE_SERVICE_ACCOUNT_KEY || '{}';
+      const serviceAccount = JSON.parse(keyString);
+      
+      if (!serviceAccount.project_id) {
+        adminApp = initializeApp({ projectId: 'dummy-project-id' });
+      } else {
+        adminApp = initializeApp({ credential: cert(serviceAccount) });
+      }
+    } catch (error) {
+      adminApp = initializeApp({ projectId: 'dummy-project-id' });
     }
   } else {
     adminApp = getApps()[0];
