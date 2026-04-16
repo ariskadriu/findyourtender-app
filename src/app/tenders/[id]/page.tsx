@@ -184,7 +184,7 @@ export default function TenderDetailPage() {
 
               <h1 className="text-2xl font-bold text-[#1A3A6B] leading-snug mb-6">{tender.title}</h1>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   { icon: Building2, label: t('tender_detail.institution'), value: tender.institution, color: '#F0A500' },
                   { icon: MapPin, label: t('tender_detail.region'), value: tender.region, color: '#2D6BE4' },

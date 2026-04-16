@@ -139,8 +139,8 @@ export default function AdminPage() {
 
         {/* Users table */}
         {activeTab === 'users' && (
-          <div className="card overflow-hidden">
-            <table className="w-full text-sm">
+          <div className="card overflow-hidden overflow-x-auto">
+            <table className="w-full text-sm min-w-[600px]">
               <thead className="bg-gray-50 text-left">
                 <tr>
                   {['Emri', 'Email', 'Biznesi', 'Statusi', 'Krijuar'].map(h => (
@@ -171,8 +171,8 @@ export default function AdminPage() {
 
         {/* Tenders table */}
         {activeTab === 'tenders' && (
-          <div className="card overflow-hidden">
-            <table className="w-full text-sm">
+          <div className="card overflow-hidden overflow-x-auto">
+            <table className="w-full text-sm min-w-[600px]">
               <thead className="bg-gray-50">
                 <tr>
                   {['Titulli', 'Institucioni', 'Statusi', 'Kategoria', 'Veprime'].map(h => (

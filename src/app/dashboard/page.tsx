@@ -136,14 +136,14 @@ function DashboardContent() {
           </div>
 
           <div className="grid lg:grid-cols-4 gap-6">
-            {/* Sidebar tabs */}
+            {/* Sidebar tabs - horizontal scroll on mobile, vertical on desktop */}
             <div className="lg:col-span-1">
-              <div className="card p-2 space-y-1">
+              <div className="card p-2 flex lg:flex-col gap-1 overflow-x-auto lg:overflow-x-visible">
                 {tabs.map(({ id, icon: Icon, label }) => (
                   <button
                     key={id}
                     onClick={() => setActiveTab(id)}
-                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                    className={`flex items-center space-x-2 px-4 py-3 rounded-xl text-sm font-medium transition-all whitespace-nowrap flex-shrink-0 ${
                       activeTab === id
                         ? 'bg-[#1A3A6B] text-white shadow-md'
                         : 'text-gray-600 hover:bg-gray-50'
