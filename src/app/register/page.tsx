@@ -32,17 +32,17 @@ export default function RegisterPage() {
 
     try {
       await register(formData);
+      // If we got here, auth was successful, regardless of firestore/email callbacks
       setSuccess(true);
-      setTimeout(() => router.push('/pricing'), 2000);
-    } catch (error: unknown) {
-      const err = error as { code?: string };
-      const code = err?.code || '';
-      if (code === 'auth/email-already-in-use') {
+      setTimeout(() => router.push('/dashboard'), 2000);
+    } catch (error: any) {
+      console.error('Registration flow failure:', error);
+      if (error.code === 'auth/email-already-in-use') {
         setError('Ky email është tashmë i regjistruar.');
-      } else if (code === 'auth/weak-password') {
+      } else if (error.code === 'auth/weak-password') {
         setError('Fjalëkalimi duhet të ketë së paku 6 karaktere.');
       } else {
-        setError('Ndodhi një gabim. Ju lutem provoni sërish.');
+        setError('Ndodhi një gabim gjatë krijimit të llogarisë. Ju lutem kontrolloni të dhënat.');
       }
     } finally {
       setLoading(false);

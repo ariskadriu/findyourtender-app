@@ -110,32 +110,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const register = async ({ email, password, fullName, businessName, phone }: RegisterData) => {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    const { user: newUser } = result;
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      const { user: newUser } = result;
 
-    // Create Firestore user document
-    await setDoc(doc(db, 'users', newUser.uid), {
-      uid: newUser.uid,
-      fullName,
-      businessName,
-      email,
-      phone: phone || '',
-      language: 'sq',
-      subscriptionStatus: 'inactive',
-      savedTenders: [],
-      notificationCategories: [],
-      createdAt: serverTimestamp(),
-    });
+      // Create Firestore user document (wrap in inner try as we want to log the exact failure)
+      try {
+        await setDoc(doc(db, 'users', newUser.uid), {
+          uid: newUser.uid,
+          fullName,
+          businessName,
+          email,
+          phone: phone || '',
+          language: 'sq',
+          subscriptionStatus: 'inactive',
+          savedTenders: [],
+          notificationCategories: [],
+          createdAt: serverTimestamp(),
+        });
+      } catch (firestoreError) {
+        console.error('Firestore Profile Creation Error:', firestoreError);
+        // We don't throw here so the user can still be redirected to dashboard
+      }
 
-    // Send email verification
-    await sendEmailVerification(newUser);
+      // Send email verification
+      try {
+        await sendEmailVerification(newUser);
+      } catch (e) { console.error('Email verification error:', e); }
 
-    // Send welcome email via API
-    await fetch('/api/emails/welcome', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, name: fullName }),
-    });
+      // Send welcome email via API
+      try {
+        await fetch('/api/emails/welcome', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name: fullName }),
+        });
+      } catch (e) { console.error('Welcome email API error:', e); }
+
+    } catch (authError) {
+      console.error('Firebase Auth Registration Error:', authError);
+      throw authError; // This is the fatal one we want to show in the UI
+    }
   };
 
   const logout = async () => {
