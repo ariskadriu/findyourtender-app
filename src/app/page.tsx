@@ -111,7 +111,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-16 max-w-3xl mx-auto animate-fade-in-up animation-delay-600">
               {[
                 { icon: CheckCircle, text: 'Burime Zyrtare Qeveritare', color: '#F0A500' },
-                { icon: Shield, text: 'Pagesa e Sigurt me Stripe', color: '#10B981' },
+                { icon: Shield, text: 'Pagesa e Sigurt me Paddle', color: '#10B981' },
                 { icon: Zap, text: 'Përditësuar çdo 6 orë', color: '#2D6BE4' },
               ].map((badge, i) => (
                 <div key={i} className="flex items-center justify-center space-x-3 bg-white/5 p-3 rounded-xl border border-white/10">

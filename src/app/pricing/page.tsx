@@ -1,44 +1,63 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useI18n } from '@/contexts/I18nContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { CheckCircle, TrendingUp, Loader2 } from 'lucide-react';
-import { Suspense } from 'react';
+import { CheckCircle, TrendingUp, Loader2, X } from 'lucide-react';
+import type { Paddle } from '@paddle/paddle-js';
 
 function PricingContent() {
   const { user } = useAuth();
   const { t } = useI18n();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const subscribed = searchParams?.get('subscribed') === 'true';
+  const [paddle, setPaddle] = useState<Paddle | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    // Load Paddle.js client-side
+    import('@paddle/paddle-js').then(({ initializePaddle }) => {
+      initializePaddle({
+        environment: (process.env.NEXT_PUBLIC_PADDLE_ENV || 'sandbox') as 'sandbox' | 'production',
+        token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN || '',
+        eventCallback(event) {
+          if (event.name === 'checkout.completed') {
+            setShowSuccess(true);
+            setTimeout(() => router.push('/dashboard?subscribed=true'), 3000);
+          }
+        },
+      }).then((p) => p && setPaddle(p));
+    });
+  }, [router]);
 
   const handleCheckout = async () => {
     if (!user) {
       router.push('/register');
       return;
     }
+    if (!paddle) {
+      setError('Duke u ngarkuar sistemi i pagesave...');
+      return;
+    }
     setLoading(true);
     setError('');
     try {
-      const token = await user.getIdToken();
-      const res = await fetch('/api/stripe/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ userId: user.uid }),
+      paddle.Checkout.open({
+        items: [{ priceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID || '', quantity: 1 }],
+        customer: { email: user.email || '' },
+        customData: { firebaseUid: user.uid },
+        settings: {
+          displayMode: 'overlay',
+          theme: 'light',
+          locale: 'en',
+          successUrl: `${window.location.origin}/dashboard?subscribed=true`,
+        },
       });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setError('Stripe checkout dështoi. Provoni sërish.');
-      }
     } catch {
       setError('Ndodhi një gabim. Provoni sërish.');
     } finally {
@@ -60,8 +79,8 @@ function PricingContent() {
       <Navbar />
       <div className="pt-24 pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {subscribed && (
+
+          {showSuccess && (
             <div className="flex items-center space-x-3 bg-green-50 border border-green-200 text-green-800 px-6 py-4 rounded-2xl mb-8">
               <CheckCircle className="w-5 h-5 text-green-600" />
               <div>
@@ -104,13 +123,18 @@ function PricingContent() {
               <button
                 id="checkout-btn"
                 onClick={handleCheckout}
-                disabled={loading}
+                disabled={loading || !paddle}
                 className="btn-primary w-full flex items-center justify-center space-x-2 text-lg disabled:opacity-60"
               >
                 {loading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
                     <span>Duke procesuar...</span>
+                  </>
+                ) : !paddle ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Duke u ngarkuar...</span>
                   </>
                 ) : (
                   <span>{user ? t('pricing.cta') : 'Regjistrohu & Fillo'}</span>
@@ -124,7 +148,7 @@ function PricingContent() {
               )}
 
               <p className="text-center text-xs text-gray-400 mt-3">
-                🔒 Pagesa e sigurt me Stripe · Anulo çdo kohë
+                🔒 Pagesa e sigurt me kartë krediti/debiti · Anulo çdo kohë
               </p>
             </div>
 

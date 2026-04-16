@@ -69,15 +69,15 @@ function DashboardContent() {
   };
 
   const handleCancelSubscription = async () => {
-    if (!user || !userData?.stripeSubscriptionId) return;
+    if (!user || !userData?.paddleSubscriptionId) return;
     if (!confirm('Jeni i sigurt që dëshironi të anuloni abonimin?')) return;
     setCancelLoading(true);
     try {
       const token = await user.getIdToken();
-      await fetch('/api/stripe/cancel', {
+      await fetch('/api/paddle/cancel', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ subscriptionId: userData.stripeSubscriptionId }),
+        body: JSON.stringify({ subscriptionId: userData.paddleSubscriptionId }),
       });
       await refreshUserData();
     } catch (err) {

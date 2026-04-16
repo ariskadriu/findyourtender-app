@@ -8,8 +8,7 @@ export interface User {
   language: 'sq' | 'en' | 'sr' | 'de';
   subscriptionStatus: 'active' | 'inactive' | 'cancelled';
   subscriptionEndDate?: Date;
-  stripeCustomerId?: string;
-  stripeSubscriptionId?: string;
+  paddleSubscriptionId?: string;
   savedTenders: string[];
   notificationCategories: string[];
   createdAt: Date;
@@ -39,8 +38,7 @@ export interface Tender {
 }
 
 export interface Subscription {
-  stripeCustomerId: string;
-  stripeSubscriptionId: string;
+  paddleSubscriptionId: string;
   status: string;
   currentPeriodEnd: Date;
   cancelAtPeriodEnd: boolean;

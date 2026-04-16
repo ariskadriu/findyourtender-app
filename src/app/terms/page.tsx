@@ -44,7 +44,7 @@ export default function TermsPage() {
                   <CreditCard className="w-5 h-5 mr-2 text-[#F0A500]" /> 2. Abonimet dhe Pagesat
                 </h2>
                 <p>
-                  Aksesi në listat e detajuara të tenderëve kërkon një abonim aktiv prej €10/muaj. Abonimi bëhet përmes sistemit Stripe dhe rinovohet automatikisht çdo muaj, deri në momentin që ju e anuloni atë nga dashboard-i juaj.
+                  Aksesi në listat e detajuara të tenderëve kërkon një abonim aktiv prej €10/muaj. Abonimi bëhet përmes sistemit Paddle dhe rinovohet automatikisht çdo muaj, deri në momentin që ju e anuloni atë nga dashboard-i juaj.
                 </p>
               </section>
 

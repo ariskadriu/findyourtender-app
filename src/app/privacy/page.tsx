@@ -36,7 +36,7 @@ export default function PrivacyPage() {
                 </h2>
                 <ul className="list-disc pl-5 space-y-2">
                   <li><strong>Të dhënat e llogarisë:</strong> Emri, mbiemri, adresa e email-it, emri i biznesit dhe numri i telefonit kur regjistroheni.</li>
-                  <li><strong>Të dhënat e pagesës:</strong> Procesimi i pagesave bëhet përmes Stripe. Ne nuk ruajmë numrat e kartelave tuaja kreditore në serverët tanë.</li>
+                  <li><strong>Të dhënat e pagesës:</strong> Procesimi i pagesave bëhet përmes Paddle. Ne nuk ruajmë numrat e kartelave tuaja kreditore në serverët tanë.</li>
                   <li><strong>Të dhënat e përdorimit:</strong> Informacione rreth mënyrës se si ndërveproni me platformën tonë (tenderët e kërkuar, kategoritë e preferuara).</li>
                 </ul>
               </section>
