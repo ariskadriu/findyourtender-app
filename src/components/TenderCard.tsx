@@ -8,10 +8,10 @@ import { differenceInDays } from 'date-fns';
 
 interface TenderCardProps {
   tender: Tender;
-  blurred?: boolean;
+    isFreePreview?: boolean;
 }
 
-export default function TenderCard({ tender, blurred = false }: TenderCardProps) {
+export default function TenderCard({ tender, blurred = false, isFreePreview = false }: TenderCardProps) {
   const { t } = useI18n();
 
   const daysLeft = tender.deadline ? differenceInDays(new Date(tender.deadline), new Date()) : null;
@@ -26,7 +26,7 @@ export default function TenderCard({ tender, blurred = false }: TenderCardProps)
   const statusInfo = statusConfig[tender.status] || statusConfig.active;
 
   return (
-    <div className={`card p-6 flex flex-col h-full group hover:-translate-y-1 transition-all duration-300 ${blurred ? 'relative overflow-hidden' : ''}`}>
+    <div className={`card p-6 flex flex-col h-full group hover:-translate-y-1 transition-all duration-300 ${blurred ? 'relative overflow-hidden' : ''} ${isFreePreview ? 'border-2 border-emerald-400' : ''}`}>
       {blurred && (
         <div className="absolute inset-0 backdrop-blur-sm bg-white/60 z-10 rounded-2xl flex items-center justify-center">
           <div className="text-center p-4">
@@ -44,7 +44,10 @@ export default function TenderCard({ tender, blurred = false }: TenderCardProps)
             {isUrgent && (
               <span className="badge badge-urgent">{t('tenders.urgent')}</span>
             )}
-            <span className="badge bg-[#1A3A6B]/10 text-[#1A3A6B] text-xs">{tender.category}</span>
+            {isFreePreview && (
+              <span className="badge bg-emerald-500 text-white animate-pulse shadow-sm shadow-emerald-500/50">PREVIEW FALAS</span>
+            )}
+            <span className="badge bg-[#1A3A6B]/10 text-[#1A3A6B] text-xs font-semibold">{tender.category}</span>
           </div>
           <h3 className="font-semibold text-[#1A3A6B] text-sm leading-snug line-clamp-2 group-hover:text-[#2D6BE4] transition-colors">
             {tender.title}

@@ -38,9 +38,22 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     loadTranslations(locale).then(setTranslations);
   }, [locale]);
 
-  const setLocale = (lang: Language) => {
+  const setLocale = async (lang: Language) => {
     setLocaleState(lang);
     localStorage.setItem('fyt-locale', lang);
+    
+    // Set cookie via API for server components
+    try {
+      await fetch('/api/i18n', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ locale: lang }),
+      });
+      // Force refresh to update server-side translations
+      window.location.reload();
+    } catch (err) {
+      console.error('Failed to sync locale:', err);
+    }
   };
 
   const t = (key: string): string => {

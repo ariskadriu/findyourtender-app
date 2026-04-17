@@ -82,7 +82,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    const token = await result.user.getIdToken();
+    await fetch('/api/auth/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
+    window.location.href = '/dashboard';
   };
 
   const loginWithGoogle = async () => {
@@ -107,6 +114,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         createdAt: serverTimestamp(),
       });
     }
+
+    // Explicitly sync session before redirecting
+    const token = await gUser.getIdToken();
+    await fetch('/api/auth/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
+
+    // Send to dashboard and force refresh for server components
+    window.location.href = '/dashboard';
   };
 
   const register = async ({ email, password, fullName, businessName, phone }: RegisterData) => {

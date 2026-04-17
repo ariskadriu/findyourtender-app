@@ -30,52 +30,64 @@ export default function TermsPage() {
                 </p>
               </div>
 
-              <section>
+               <section>
                 <h2 className="text-xl font-bold text-[#1A3A6B] mb-3 flex items-center">
                    <UserCheck className="w-5 h-5 mr-2 text-[#F0A500]" /> 1. Pranimi i Kushteve
                 </h2>
                 <p>
-                  Duke krijuar një llogari në FindYourTender, ju pajtoheni plotësisht me këto Kushte të Shërbimit. Në qoftë se nuk pajtoheni me ndonjë pjesë të këtyre kushteve, duhet të ndërprisni përdorimin e platformës menjëherë.
+                  Duke krijuar një llogari në FindYourTender, ju pajtoheni plotësisht me këto Kushte të Shërbimit. Në qoftë se nuk pajtoheni me ndonjë pjesë të këtyre kushteve, duhet të ndërprisni përdorimin e platformës menjëherë. Ne rezervojmë të drejtën për të ndryshuar këto kushte në çdo kohë pa njoftim paraprak.
                 </p>
               </section>
 
               <section>
                 <h2 className="text-xl font-bold text-[#1A3A6B] mb-3 flex items-center">
-                  <CreditCard className="w-5 h-5 mr-2 text-[#F0A500]" /> 2. Abonimet dhe Pagesat
+                  <CreditCard className="w-5 h-5 mr-2 text-[#F0A500]" /> 2. Abonimet, Pagesat dhe Partnerët
                 </h2>
-                <p>
-                  Aksesi në listat e detajuara të tenderëve kërkon një abonim aktiv prej €10/muaj. Abonimi bëhet përmes sistemit Paddle dhe rinovohet automatikisht çdo muaj, deri në momentin që ju e anuloni atë nga dashboard-i juaj.
-                </p>
-              </section>
-
-              <section>
-                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3">3. Përdorimi i Shërbimit</h2>
-                <p>
-                  Ju pajtoheni që shërbimi do të përdoret vetëm për qëllime të ligjshme biznesi. Ndalohet kategorikisht:
+                <p className="mb-4">
+                  Aksesi në listat e detajuara të tenderëve kërkon një abonim aktiv prej €10/muaj. Ne përdorim <strong>Paddle</strong> si tregtar zyrtar të regjistruar (Merchant of Record). Të gjitha transaksionet, faturimet dhe rimbursimet procesohen përmes tyre.
                 </p>
                 <ul className="list-disc pl-5 space-y-2">
-                  <li>Përdorimi i skripteve automatike (scraping) mbi platformën tonë.</li>
-                  <li>Shpërndarja e aksesit të llogarisë tuaj me persona të tjerë.</li>
-                  <li>Rishitja e informacioneve të marra nga platforma pa pëlqimin tonë me shkrim.</li>
+                  <li><strong>Rinovimi:</strong> Abonimi rinovohet automatikisht çdo muaj.</li>
+                  <li><strong>Anulimi:</strong> Ju mund ta anuloni abonimin në çdo kohë nga dashboard-i juaj. Anulimi do të jetë efektiv në fund të ciklit aktual të faturimit.</li>
+                  <li><strong>Rimbursimet:</strong> Për shkak të natyrës digjitale të shërbimit, ne nuk ofrojmë rimbursime pasi të dhënat janë aksesuar.</li>
                 </ul>
               </section>
 
               <section>
-                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3">4. Kufizimi i Përgjegjësisë</h2>
-                <p>
-                  Edhe pse ne bëjmë çdo përpjekje për të siguruar saktësinë e të dhënave, FindYourTender nuk mban përgjegjësi për:
+                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3">3. Përdorimi i Shërbimit dhe Integriteti i të Dhënave</h2>
+                <p className="mb-4">
+                  FindYourTender grumbullon të dhëna nga portali "e-prokurimi" i Republikës së Kosovës. Ju pajtoheni që shërbimi do të përdoret vetëm për qëllime të ligjshme biznesi.
                 </p>
+                <h4 className="font-bold text-[#1A3A6B] text-sm mb-2">Ndalohet kategorikisht:</h4>
                 <ul className="list-disc pl-5 space-y-2">
-                  <li>Gabime ose lëshime në dokumentacionin e tenderëve (gjithmonë referojuni burimit zyrtar).</li>
-                  <li>Humbjet financiare si rezultat i vendimeve të marra bazuar në të dhënat tona.</li>
-                  <li>Ndërprerjet e mundshme teknike të shërbimit.</li>
+                  <li>Përdorimi i skripteve automatike, bot-eve ose scraping-ut mbi platformën tonë.</li>
+                  <li>Shpërndarja e kredencialeve të llogarisë me persona të tretë (një llogari për një biznes).</li>
+                  <li>Publikimi ose rishitja e informacioneve tona në platforma të tjera konkurruese.</li>
+                  <li>Manipulimi i të dhënave ose tentimi për të ndërhyrë në infrastrukturën teknike.</li>
                 </ul>
               </section>
 
               <section>
-                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3">5. Ligji i Zbatuar</h2>
+                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3">4. Kufizimi i Përgjegjësisë (Disclaimer)</h2>
+                <p className="mb-4 text-red-700 font-medium">
+                  FindYourTender OLFSHON SHËRBIMIN "SIÇ ËSHTË" PA ASNJË GARANCI TË SHPREHUR.
+                </p>
                 <p>
-                  Këto Kushte rregullohen dhe interpretohen në pajtim me ligjet e Republikës së Kosovës. Çdo kontest do të zgjidhet nga gjykata kompetente në Prishtinë.
+                  Edhe pse ne bëjmë çdo përpjekje për të siguruar saktësinë e të dhënave përmes sistemit tonë të skanimit, ne nuk mbajmë përgjegjësi nëse të dhënat në portalin zyrtar ndryshojnë pas skanimit tonë të fundit. Përgjegjësia finale për dorëzimin e ofertës dhe saktësinë e dokumentacionit mbetet te ju.
+                </p>
+              </section>
+
+              <section>
+                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3">5. Pronësia Intelektuale</h2>
+                <p>
+                  Logot, dizajni, kodi burimor dhe marka "FindYourTender" janë pronë ekskluzive e platformës tonë. Përmbajtja e tenderëve i përket autoriteteve kontraktuese përkatëse dhe rregullohet sipas ligjeve të Kosovës mbi të dhënat publike dhe prokurimin.
+                </p>
+              </section>
+
+              <section>
+                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3">6. Ligji i Zbatuar dhe Juridiksioni</h2>
+                <p>
+                  Këto Kushte rregullohen dhe interpretohen në pajtim me ligjet e Republikës së Kosovës. Për çdo mosmarrëveshje që nuk mund të zgjidhet në mënyrë miqësore, kompetente është Gjykata Themelore në Prishtinë.
                 </p>
               </section>
             </div>

@@ -153,13 +153,17 @@ export default function TendersClient({
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {initialTenders.map((tender, i) => (
-                <TenderCard
-                  key={tender.id}
-                  tender={tender}
-                  blurred={!isSubscribed && i >= 3}
-                />
-              ))}
+              {initialTenders.map((tender, i) => {
+                const isFreePreview = i < 3;
+                return (
+                  <TenderCard
+                    key={tender.id}
+                    tender={tender}
+                    blurred={!isSubscribed && !isFreePreview}
+                    isFreePreview={!isSubscribed && isFreePreview}
+                  />
+                );
+              })}
             </div>
 
             {/* Pagination UI */}

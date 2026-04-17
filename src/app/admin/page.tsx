@@ -97,15 +97,42 @@ export default function AdminPage() {
           <h2 className="text-2xl font-bold text-[#1A3A6B] mb-2">Qasje e Kufizuar</h2>
           <p className="text-gray-600 mb-6">
             Kjo faqe është e rezervuar vetëm për administratorët. Nëse jeni pronari i faqes, ju lutem shtoni 
-            <code className="bg-gray-100 px-1 rounded mx-1">role: "admin"</code> 
+            <code className="bg-gray-100 px-1 rounded mx-1 text-red-600">role: "admin"</code> 
             në dokumentin tuaj në Firebase Console.
           </p>
-          <button 
-            onClick={() => router.push('/')}
-            className="btn-primary w-full"
-          >
-            Kthehu në Fillim
-          </button>
+
+          <div className="bg-gray-50 rounded-xl p-4 mb-6 text-left text-xs font-mono space-y-2 border border-gray-100">
+            <div className="text-gray-400 uppercase text-[10px] font-bold mb-1">Informacionet e Debug:</div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">UID:</span>
+              <span className="text-[#1A3A6B]">{user?.uid || 'Nuk u gjet'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">Email:</span>
+              <span className="text-[#1A3A6B]">{user?.email}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">Roli aktual:</span>
+              <span className={userData?.role === 'admin' ? 'text-green-600' : 'text-red-600 font-bold'}>
+                &quot;{userData?.role || 'null'}&quot;
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <button 
+              onClick={() => router.push('/')}
+              className="btn-primary w-full"
+            >
+              Kthehu në Fillim
+            </button>
+            <button 
+              onClick={() => window.location.reload()}
+              className="text-xs text-gray-400 hover:text-[#1A3A6B] transition-colors"
+            >
+              Rifresko Faqen
+            </button>
+          </div>
         </div>
       </div>
     );

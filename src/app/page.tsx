@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 export default async function HomePage() {
-  const t = await getTranslations('sq');
+  const t = await getTranslations();
 
   const features = [
     { icon: Database, key: 'f1', color: '#2D6BE4' },
@@ -42,8 +42,11 @@ export default async function HomePage() {
     },
   ];
 
+    const cookieStore = cookies();
+  const token = cookieStore.get('firebase-token')?.value;
+
   return (
-    <div className="min-h-screen bg-[#F5F7FA]">
+    <div className="min-h-screen bg-[#F8FAFC]">
       <Navbar />
 
       {/* Hero Section */}
@@ -59,7 +62,7 @@ export default async function HomePage() {
             className="object-cover"
           />
           <div className="absolute inset-0 bg-[#0F2347]/75 backdrop-blur-[2px]" />
-          <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#F5F7FA] to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#F8FAFC] to-transparent" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -90,16 +93,16 @@ export default async function HomePage() {
             {/* Main CTAs */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-fade-in-up animation-delay-400">
               <Link
-                href="/register"
-                id="hero-register-btn"
+                href={token ? "/dashboard" : "/register"}
+                id="hero-primary-btn"
                 className="group w-full sm:w-auto flex items-center justify-center space-x-3 bg-[#F0A500] hover:bg-[#C87800] text-white font-black px-12 py-5 rounded-2xl transition-all duration-300 shadow-[0_20px_40px_-15px_rgba(240,165,0,0.5)] hover:shadow-[0_25px_50px_-12px_rgba(240,165,0,0.6)] hover:-translate-y-1.5 text-xl uppercase tracking-wider"
               >
-                <span>{t('hero.cta_primary')}</span>
+                <span>{token ? t('nav.dashboard') : t('hero.cta_primary')}</span>
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
               </Link>
               <Link
                 href="/tenders"
-                id="hero-tenders-btn"
+                id="hero-secondary-btn"
                 className="group w-full sm:w-auto flex items-center justify-center space-x-3 bg-white/10 hover:bg-white/20 text-white font-bold px-12 py-5 rounded-2xl transition-all duration-300 backdrop-blur-md border border-white/30 text-xl"
               >
                 <span>{t('hero.cta_secondary')}</span>
@@ -149,11 +152,28 @@ export default async function HomePage() {
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="section-title">{t('how_it_works.title')}</h2>
-          <p className="text-gray-500 max-w-xl mx-auto">Tre hapa të thjeshtë për të gjetur tenderin e duhur</p>
+          <p className="text-gray-500 max-w-xl mx-auto">{t('how_it_works.title_desc') || 'Tre hapa të thjeshtë për të gjetur tenderin e duhur'}</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-          {/* Connector line */}
-          <div className="hidden md:block absolute top-12 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-[#1A3A6B] via-[#F0A500] to-[#1A3A6B] opacity-20" />
+          {/* Connector Curved Line - SVG */}
+          <div className="hidden md:block absolute top-12 left-0 w-full h-24 -z-10 pointer-events-none opacity-20">
+            <svg width="100%" height="100%" viewBox="0 0 1000 100" fill="none" preserveAspectRatio="none">
+              <path 
+                d="M100,50 Q250,10 400,50 T700,50 T900,50" 
+                stroke="url(#gradient-line)" 
+                strokeWidth="4" 
+                strokeDasharray="10 10" 
+                fill="none"
+              />
+              <defs>
+                <linearGradient id="gradient-line" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#1A3A6B" />
+                  <stop offset="50%" stopColor="#F0A500" />
+                  <stop offset="100%" stopColor="#1A3A6B" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
 
           {[
             {
@@ -179,7 +199,7 @@ export default async function HomePage() {
             },
           ].map((item) => (
             <div key={item.step} className="card p-8 text-center hover:-translate-y-2 transition-transform duration-300 group">
-              <div className="text-4xl mb-4">{item.icon}</div>
+              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">{item.icon}</div>
               <div
                 className="text-xs font-bold uppercase tracking-widest mb-3 inline-block px-3 py-1 rounded-full text-white"
                 style={{ backgroundColor: item.color }}

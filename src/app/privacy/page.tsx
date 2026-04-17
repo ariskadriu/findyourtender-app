@@ -21,63 +21,68 @@ export default function PrivacyPage() {
             <div className="prose prose-blue max-w-none text-gray-600 space-y-6">
               <p className="text-sm text-gray-400 italic">E përditësuar së fundmi: 13 Prill 2026</p>
 
-              <section>
+               <section>
                 <h2 className="text-xl font-bold text-[#1A3A6B] mb-3 flex items-center">
-                   <FileText className="w-5 h-5 mr-2 text-[#F0A500]" /> 1. Hyrje
+                   <FileText className="w-5 h-5 mr-2 text-[#F0A500]" /> 1. Hyrje dhe Baza Ligjore
                 </h2>
                 <p>
-                  FindYourTender (&quot;ne&quot;, &quot;na&quot;, ose &quot;ynë&quot;) është e përkushtuar të mbrojë privatësinë tuaj. Kjo Politikë e Privatësisë shpjegon se si mbledhim, përdorim dhe mbrojmë të dhënat tuaja personale në përputhje me <strong>Ligjin Nr. 06/L-082 për Mbrojtjen e të Dhënave Personale</strong> në Republikën e Kosovës.
+                  FindYourTender është e përkushtuar të mbrojë privatësinë tuaj. Ne mbledhim dhe përpunojmë të dhënat tuaja në përputhje me <strong>Ligjin Nr. 06/L-082 për Mbrojtjen e të Dhënave Personale</strong> në Kosovë dhe standardet e GDPR. Baza jonë ligjore për mbledhjen e të dhënave është përmbushja e kontratës (shërbimit) dhe pëlqimi juaj i shprehur.
                 </p>
               </section>
 
               <section>
                 <h2 className="text-xl font-bold text-[#1A3A6B] mb-3 flex items-center">
-                  <Eye className="w-5 h-5 mr-2 text-[#F0A500]" /> 2. Të dhënat që mbledhim
+                  <Eye className="w-5 h-5 mr-2 text-[#F0A500]" /> 2. Çfarë të dhënash mbledhim?
                 </h2>
                 <ul className="list-disc pl-5 space-y-2">
-                  <li><strong>Të dhënat e llogarisë:</strong> Emri, mbiemri, adresa e email-it, emri i biznesit dhe numri i telefonit kur regjistroheni.</li>
-                  <li><strong>Të dhënat e pagesës:</strong> Procesimi i pagesave bëhet përmes Paddle. Ne nuk ruajmë numrat e kartelave tuaja kreditore në serverët tanë.</li>
-                  <li><strong>Të dhënat e përdorimit:</strong> Informacione rreth mënyrës se si ndërveproni me platformën tonë (tenderët e kërkuar, kategoritë e preferuara).</li>
+                  <li><strong>Identiteti:</strong> Emri, mbiemri, emri i biznesit dhe numri i telefonit.</li>
+                  <li><strong>Kontaktet:</strong> Adresa e email-it për dërgimin e njoftimeve dhe faturave.</li>
+                  <li><strong>Teknike:</strong> Adresa IP, lloji i shfletuesit, dhe cookies (përfshirë ato për sesionin dhe gjuhën e preferuar).</li>
+                  <li><strong>Financiare:</strong> Ne nuk ruajmë të dhëna bankare. Të gjitha pagesat procesohen nga <strong>Paddle</strong>, i cili grumbullon të dhënat tuaja të faturimit sipas politikave të tyre të sigurisë.</li>
                 </ul>
               </section>
 
               <section>
                 <h2 className="text-xl font-bold text-[#1A3A6B] mb-3 flex items-center">
-                  <Lock className="w-5 h-5 mr-2 text-[#F0A500]" /> 3. Si i përdorim të dhënat tuaja
+                  <Lock className="w-5 h-5 mr-2 text-[#F0A500]" /> 3. Si i përdorim të dhënat tuaja?
                 </h2>
-                <p>Ne i përdorim të dhënat tuaja për:</p>
+                <p className="mb-4">Të dhënat tuaja përdoren ekskluzivisht për:</p>
                 <ul className="list-disc pl-5 space-y-2">
-                  <li>Ofrimin e shërbimeve të agregimit të tenderëve.</li>
-                  <li>Menaxhimin e abonimit tuaj dhe procesimin e pagesave.</li>
-                  <li>Dërgimin e njoftimeve për tenderë të rinj sipas preferencave tuaja.</li>
-                  <li>Përmirësimin e sigurisë dhe performancës së platformës.</li>
+                  <li>Krijimin dhe identifikimin e llogarisë tuaj.</li>
+                  <li>Përditësimin e statusit të abonimit përmes sistemeve tona dhe Paddle.</li>
+                  <li>Dërgimin e "Tenderëve të Ditës" bazuar në kategoritë që ju keni zgjedhur.</li>
+                  <li>Analizë të Brendshme: Për të kuptuar cilat rajone ose kategori janë më të kërkuara në Kosovë.</li>
                 </ul>
               </section>
 
               <section>
-                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3">4. Mbrojtja e të dhënave</h2>
+                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3 border-l-4 border-[#F0A500] pl-4">4. Ndarja e të dhënave me palët e treta</h2>
+                <p className="mb-4">Ne nuk i shesim të dhënat tuaja. Ne i ndajmë ato vetëm me partnerë të besuar për funksionimin e shërbimit:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li><strong>Paddle:</strong> Për procesim të pagesave dhe taksave.</li>
+                  <li><strong>Resend:</strong> Për dërgimin e email-eve automatike.</li>
+                  <li><strong>Firebase (Google):</strong> Për ruajtjen e sigurt të bazës së të dhënave dhe autentifikim.</li>
+                </ul>
+              </section>
+
+              <section>
+                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3">5. Siguria dhe Cookies</h2>
                 <p>
-                  Ne zbatojmë masa teknike dhe organizative të sigurisë për të mbrojtur të dhënat tuaja kundër qasjes së paautorizuar, ndryshimit ose shkatërrimit. Të gjitha komunikimet janë të enkriptuara përmes teknologjisë SSL.
+                  Ne përdorim teknologjinë moderne SSL për të enkriptuar çdo transferim të dhënash. Platforma përdor "Cookies" për të mbajtur mend preferencat tuaja (si gjuha Shqip/English) dhe për të qëndruar të identifikuar në sistem. Ju mund t'i bllokoni ato në shfletues, por kjo mund të limitojë funksionalitetin e faqes.
                 </p>
               </section>
 
               <section>
-                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3">5. Të drejtat tuaja</h2>
-                <p>Sipas ligjit në fuqi në Kosovë, ju keni të drejtë:</p>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>Të keni qasje në të dhënat tuaja personale.</li>
-                  <li>Të kërkoni korrigjimin e të dhënave të pasakta.</li>
-                  <li>Të kërkoni fshirjen e të dhënave tuaja (&quot;të drejtën për t&apos;u harruar&quot;).</li>
-                  <li>Të tërhiqni pëlqimin për njoftime marketingu në çdo kohë.</li>
-                </ul>
+                <h2 className="text-xl font-bold text-[#1A3A6B] mb-3">6. Të drejtat tuaja ligjore</h2>
+                <p>Ju gëzoni të drejtën për të kërkuar qasje, korrigjim ose fshirje totale të të dhënave tuaja nga sistemet tona në çdo kohë. Për këtë, ju lutem na shkruani në email-in zyrtar të privatësisë.</p>
               </section>
 
-              <section className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                <h2 className="text-lg font-bold text-[#1A3A6B] mb-2">Na Kontaktoni</h2>
+              <section className="bg-[#1A3A6B]/5 p-6 rounded-2xl border border-[#1A3A6B]/10">
+                <h2 className="text-lg font-bold text-[#1A3A6B] mb-2">Zyra e Privatësisë</h2>
                 <p className="text-sm">
-                  Për çdo pyetje rreth privatësisë suaj, mund të na kontaktoni në:<br />
-                  <strong>Email:</strong> privacy@findyourtender.com<br />
-                  <strong>Adresa:</strong> Prishtinë, Kosovë
+                  Për çdo kërkesë ligjore ose ankesë:<br />
+                  <strong>Email:</strong> support@findyourtender.com<br />
+                  <strong>Juridiksioni:</strong> Prishtinë, Republika e Kosovës
                 </p>
               </section>
             </div>
