@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { cookies } from 'next/headers';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AnimatedCounter from '@/components/AnimatedCounter';
