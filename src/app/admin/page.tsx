@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import { useAuth } from '@/contexts/AuthContext';
-import { collection, getDocs, query, orderBy, limit, updateDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, limit, updateDoc, doc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Users, FileText, DollarSign, RefreshCw, Eye, EyeOff, Star } from 'lucide-react';
 import { User, Tender } from '@/types';
@@ -17,7 +17,22 @@ export default function AdminPage() {
   const [tenders, setTenders] = useState<Tender[]>([]);
   const [loading, setLoading] = useState(true);
   const [scraperLoading, setScraperLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'users' | 'tenders'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'tenders' | 'add'>('users');
+  const [newTender, setNewTender] = useState<Partial<Tender>>({
+    title: '',
+    institution: '',
+    category: 'Ndërtim',
+    region: 'Prishtinë',
+    status: 'active',
+    publishedDate: new Date(),
+    deadline: new Date(),
+    estimatedValue: 0,
+    currency: 'EUR',
+    description: '',
+    sourceUrl: '',
+    cpvCodes: [],
+    documents: [],
+  });
 
   useEffect(() => {
     if (user && userData?.role === 'admin') {
@@ -73,17 +88,43 @@ export default function AdminPage() {
     setTenders(prev => prev.map(t => t.id === tenderId ? { ...t, featured: !featured } : t));
   };
 
-  const handleTriggerScraper = async () => {
-    setScraperLoading(true);
+  const handleAddTender = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTender.title || !newTender.institution || !newTender.sourceUrl) {
+      alert('Ju lutem plotësoni fushat kryesore (Titulli, Institucioni, Linku).');
+      return;
+    }
+
     try {
-      const token = await user!.getIdToken();
-      await fetch('/api/admin/scraper-trigger', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
+      setScraperLoading(true);
+      await addDoc(collection(db, 'tenders'), {
+        ...newTender,
+        publishedDate: serverTimestamp(),
+        deadline: new Date(newTender.deadline || new Date()),
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
-      alert('Scraper u aktivizua!');
+      alert('Tenderi u shtua me sukses!');
+      setActiveTab('tenders');
+      fetchAdminData();
+      // Reset form
+      setNewTender({
+        title: '',
+        institution: '',
+        category: 'Ndërtim',
+        region: 'Prishtinë',
+        status: 'active',
+        publishedDate: new Date(),
+        deadline: new Date(),
+        estimatedValue: 0,
+        currency: 'EUR',
+        description: '',
+        sourceUrl: '',
+        cpvCodes: [],
+        documents: [],
+      });
     } catch {
-      alert('Gabim duke aktivizuar scraper-in.');
+      alert('Gabim gjatë shtimit të tenderit.');
     } finally {
       setScraperLoading(false);
     }
@@ -154,7 +195,10 @@ export default function AdminPage() {
       <Navbar />
       <div className="pt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold text-[#1A3A6B]">🔒 Admin Panel</h1>
+          <div>
+            <h1 className="text-2xl font-bold text-[#1A3A6B]">🔒 Admin Panel</h1>
+            <p className="text-gray-500 text-sm">Mirësevini përsëri në qendrën e kontrollit.</p>
+          </div>
           <button
             onClick={handleTriggerScraper}
             disabled={scraperLoading}
@@ -168,30 +212,153 @@ export default function AdminPage() {
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[
-            { icon: Users, label: 'Përdorues Totale', value: stats.totalUsers, color: '#1A3A6B' },
-            { icon: Users, label: 'Abonentë Aktiv', value: stats.activeSubscribers, color: '#10B981' },
-            { icon: FileText, label: 'Tenderë Totale', value: stats.totalTenders, color: '#2D6BE4' },
+            { icon: Users, label: 'Përdorues', value: stats.totalUsers, color: '#1A3A6B' },
+            { icon: Star, label: 'Abonentë', value: stats.activeSubscribers, color: '#10B981' },
+            { icon: FileText, label: 'Tenderë', value: stats.totalTenders, color: '#2D6BE4' },
             { icon: DollarSign, label: 'MRR', value: `€${stats.mrr}`, color: '#F0A500' },
           ].map(({ icon: Icon, label, value, color }) => (
-            <div key={label} className="card p-6">
+            <div key={label} className="card p-6 border-b-2 border-transparent hover:border-b-[#1A3A6B] transition-all">
               <Icon className="w-6 h-6 mb-2" style={{ color }} />
               <div className="text-2xl font-bold text-[#1A3A6B]">{value}</div>
-              <div className="text-gray-500 text-sm">{label}</div>
+              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider">{label}</div>
             </div>
           ))}
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-2 mb-6 bg-gray-100/50 p-1 rounded-xl w-fit">
           <button onClick={() => setActiveTab('users')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${activeTab === 'users' ? 'bg-[#1A3A6B] text-white' : 'bg-white text-gray-600'}`}>
+            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'users' ? 'bg-white text-[#1A3A6B] shadow-sm' : 'text-gray-500 hover:text-[#1A3A6B]'}`}>
             Përdoruesit
           </button>
           <button onClick={() => setActiveTab('tenders')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${activeTab === 'tenders' ? 'bg-[#1A3A6B] text-white' : 'bg-white text-gray-600'}`}>
+            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'tenders' ? 'bg-white text-[#1A3A6B] shadow-sm' : 'text-gray-500 hover:text-[#1A3A6B]'}`}>
             Tenderët
           </button>
+          <button onClick={() => setActiveTab('add')}
+            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'add' ? 'bg-[#F0A500] text-white shadow-md' : 'text-gray-500 hover:text-[#F0A500]'}`}>
+            + Shto Tender
+          </button>
         </div>
+
+        {/* Add Tender Form */}
+        {activeTab === 'add' && (
+          <div className="card p-8 animate-fade-in">
+            <h2 className="text-xl font-bold text-[#1A3A6B] mb-6 flex items-center">
+              <span className="w-1.5 h-6 bg-[#F0A500] rounded-full mr-3" />
+              Shto një Tender të Ri
+            </h2>
+            <form onSubmit={handleAddTender} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Titulli i Tenderit *</label>
+                  <input
+                    type="text"
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1A3A6B] focus:ring-1 focus:ring-[#1A3A6B] outline-none transition-all"
+                    placeholder="Psh: Ndërtimi i shkollës në Prizren"
+                    value={newTender.title}
+                    onChange={(e) => setNewTender({ ...newTender, title: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Autoriteti Kontraktues (Institucioni) *</label>
+                  <input
+                    type="text"
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1A3A6B] focus:ring-1 focus:ring-[#1A3A6B] outline-none transition-all"
+                    placeholder="Psh: Komuna e Prishtinës"
+                    value={newTender.institution}
+                    onChange={(e) => setNewTender({ ...newTender, institution: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Kategoria</label>
+                  <select
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1A3A6B] outline-none"
+                    value={newTender.category}
+                    onChange={(e) => setNewTender({ ...newTender, category: e.target.value })}
+                  >
+                    {['Ndërtim', 'IT dhe Teknologji', 'Shëndetësi', 'Arsim', 'Transport', 'Energji', 'Bujqësi', 'Shërbime Konsulence', 'Furnizime', 'Punë Publike', 'Tjetër'].map(c => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Rajoni</label>
+                  <select
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1A3A6B] outline-none"
+                    value={newTender.region}
+                    onChange={(e) => setNewTender({ ...newTender, region: e.target.value })}
+                  >
+                    {['Prishtinë', 'Prizren', 'Pejë', 'Mitrovicë', 'Gjilan', 'Ferizaj', 'Gjakovë', 'Tjetër'].map(r => (
+                      <option key={r} value={r}>{r}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Linku Eksakt i Tenderit *</label>
+                  <input
+                    type="url"
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1A3A6B] outline-none bg-blue-50/30"
+                    placeholder="https://e-prokurimi.rks-gov.net/..."
+                    value={newTender.sourceUrl}
+                    onChange={(e) => setNewTender({ ...newTender, sourceUrl: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Vlera e Parashikuar (€)</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1A3A6B] outline-none"
+                    value={newTender.estimatedValue}
+                    onChange={(e) => setNewTender({ ...newTender, estimatedValue: Number(e.target.value) })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Afati i fundit për aplikim</label>
+                  <input
+                    type="date"
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1A3A6B] outline-none"
+                    onChange={(e) => setNewTender({ ...newTender, deadline: new Date(e.target.value) })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Statusi</label>
+                  <select
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1A3A6B] outline-none"
+                    value={newTender.status}
+                    onChange={(e) => setNewTender({ ...newTender, status: e.target.value as any })}
+                  >
+                    <option value="active">Aktiv</option>
+                    <option value="upcoming">Së shpejti</option>
+                    <option value="closed">I mbyllur</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Përshkrimi i Shkurtër</label>
+                <textarea
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1A3A6B] outline-none min-h-[100px]"
+                  placeholder="Shënoni detaje shtesë nëse ka..."
+                  value={newTender.description}
+                  onChange={(e) => setNewTender({ ...newTender, description: e.target.value })}
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={scraperLoading}
+                  className="bg-[#F0A500] hover:bg-[#C87800] text-white font-bold px-12 py-4 rounded-2xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
+                >
+                  {scraperLoading ? 'Duke ruajtur...' : 'Ruaj Tenderin'}
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
 
         {/* Users table */}
         {activeTab === 'users' && (
