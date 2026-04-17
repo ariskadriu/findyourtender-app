@@ -335,6 +335,7 @@ export default function AdminPage() {
                     <option value="active">Aktiv</option>
                     <option value="upcoming">Së shpejti</option>
                     <option value="closed">I mbyllur</option>
+                    <option value="draft">Draft (i fshehur)</option>
                   </select>
                 </div>
               </div>
@@ -411,11 +412,28 @@ export default function AdminPage() {
                     </td>
                     <td className="px-4 py-3 text-gray-600 text-xs">{t.institution}</td>
                     <td className="px-4 py-3">
-                      <span className={`badge ${t.status === 'active' ? 'badge-active' : 'badge-closed'}`}>{t.status}</span>
+                      <span className={`badge ${
+                        t.status === 'active' ? 'badge-active' : 
+                        t.status === 'draft' ? 'bg-orange-100 text-orange-600 border-orange-200' : 
+                        'badge-closed'
+                      }`}>
+                        {t.status === 'draft' ? 'DRAFT' : t.status}
+                      </span>
                     </td>
                     <td className="px-4 py-3 text-gray-500 text-xs">{t.category}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
+                        {t.status === 'draft' && (
+                          <button 
+                            onClick={async () => {
+                              await updateDoc(doc(db, 'tenders', t.id), { status: 'active', updatedAt: serverTimestamp() });
+                              fetchAdminData();
+                            }}
+                            className="px-3 py-1 bg-green-600 text-white text-[10px] font-bold rounded-lg hover:bg-green-700 transition-colors uppercase"
+                          >
+                            Aprovo
+                          </button>
+                        )}
                         <button onClick={() => handleToggleHide(t.id, !!t.hidden)}
                           className={`p-1.5 rounded-lg transition-colors ${t.hidden ? 'bg-gray-100 text-gray-500' : 'bg-blue-50 text-blue-600'}`}>
                           {t.hidden ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}

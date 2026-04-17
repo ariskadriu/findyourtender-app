@@ -21,7 +21,7 @@ export interface Tender {
   institution: string;
   category: string;
   region: string;
-  status: 'active' | 'closed' | 'upcoming';
+  status: 'active' | 'closed' | 'upcoming' | 'draft';
   publishedDate: Date;
   deadline: Date;
   estimatedValue?: number;

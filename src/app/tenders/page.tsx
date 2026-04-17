@@ -14,9 +14,9 @@ async function getTenders(searchParams: { [key: string]: string | undefined }) {
   const currentPage = parseInt(page);
 
   try {
-    let query = adminDb.collection('tenders').where('hidden', '!=', true);
+    let query = adminDb.collection('tenders').where('hidden', '!=', true).where('status', '!=', 'draft');
 
-    if (status) {
+    if (status && status !== 'draft') {
       query = query.where('status', '==', status);
     }
     if (category) {
