@@ -194,9 +194,15 @@ export default function TendersClient({
               <div className="w-14 h-14 gradient-gold rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Lock className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-[#1A3A6B] mb-2">{t('tenders.paywall_title')}</h3>
-              <p className="text-gray-500 text-sm mb-6">{t('tenders.paywall_desc')}</p>
-              <Link href="/pricing" id="paywall-cta" className="btn-primary w-full block text-center text-lg">
+              <h3 className="text-xl font-bold text-[#1A3A6B] mb-2">
+                {!isSubscribed ? 'Abonimi kërkohet' : t('tenders.paywall_title')}
+              </h3>
+              <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+                {!isSubscribed 
+                  ? 'Ju jeni të regjistruar, por kërkohet një abonim aktiv për të parë detajet e plota të tenderëve. Abonimi kushton vetëm €10/muaj.' 
+                  : t('tenders.paywall_desc')}
+              </p>
+              <Link href="/pricing" id="paywall-cta" className="btn-primary w-full block text-center text-lg shadow-gold">
                 {t('tenders.paywall_cta')}
               </Link>
             </div>

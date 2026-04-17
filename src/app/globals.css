@@ -78,6 +78,7 @@
 @layer utilities {
   .gradient-navy {
     background: linear-gradient(135deg, #1A3A6B 0%, #0F2347 100%);
+    color: white; /* Ensure children default to white text */
   }
 
   .gradient-gold {
