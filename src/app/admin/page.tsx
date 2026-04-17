@@ -88,6 +88,29 @@ export default function AdminPage() {
     setTenders(prev => prev.map(t => t.id === tenderId ? { ...t, featured: !featured } : t));
   };
 
+  const handleTriggerScraper = async () => {
+    setScraperLoading(true);
+    try {
+      const token = await user!.getIdToken();
+      const res = await fetch('/api/admin/scraper-trigger', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(`Sukses! U skanuan ${data.scraped} tenderë, prej tyre ${data.newDrafts} janë shtuar si drafte të reja.`);
+        fetchAdminData();
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (err: any) {
+      alert(`Gabim gjatë scraping: ${err.message}`);
+    } finally {
+      setScraperLoading(false);
+    }
+  };
+
+
   const handleAddTender = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTender.title || !newTender.institution || !newTender.sourceUrl) {
