@@ -90,7 +90,25 @@ export default function AdminPage() {
   };
 
   if (!user || userData?.role !== 'admin') {
-    return null;
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-4">
+        <div className="card p-8 max-w-md w-full text-center shadow-xl border-t-4 border-red-500">
+          <div className="text-4xl mb-4">🔓</div>
+          <h2 className="text-2xl font-bold text-[#1A3A6B] mb-2">Qasje e Kufizuar</h2>
+          <p className="text-gray-600 mb-6">
+            Kjo faqe është e rezervuar vetëm për administratorët. Nëse jeni pronari i faqes, ju lutem shtoni 
+            <code className="bg-gray-100 px-1 rounded mx-1">role: "admin"</code> 
+            në dokumentin tuaj në Firebase Console.
+          </p>
+          <button 
+            onClick={() => router.push('/')}
+            className="btn-primary w-full"
+          >
+            Kthehu në Fillim
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (

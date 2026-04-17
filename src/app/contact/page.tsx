@@ -58,20 +58,40 @@ export default async function ContactPage() {
               </div>
             </div>
 
-            {/* FAQ quick links */}
+            {/* FAQ section */}
             <div className="card p-6">
-              <h3 className="font-bold text-[#1A3A6B] mb-4">Pyetje të Shpeshta</h3>
-              <div className="space-y-3">
+              <h3 className="font-bold text-[#1A3A6B] mb-6 flex items-center">
+                <span className="w-1.5 h-6 bg-[#F0A500] rounded-full mr-3" />
+                Pyetje të Shpeshta
+              </h3>
+              <div className="space-y-4">
                 {[
-                  'Si mund të anuloj abonimin tim?',
-                  'A ofron FindYourTender shërbime aplikimi?',
-                  'Sa shpesh përditësohen tenderët?',
-                  'A ka version falas?',
-                ].map((q) => (
-                  <div key={q} className="flex items-start space-x-2">
-                    <span className="text-[#F0A500] mt-0.5">→</span>
-                    <span className="text-sm text-gray-600">{q}</span>
-                  </div>
+                  {
+                    q: 'Si mund të anuloj abonimin tim?',
+                    a: 'Abonimin mund ta anuloni në çdo kohë përmes Dashboard-it tuaj në seksionin "Abonimi". Qasja juaj do të mbetet aktive deri në fund të periudhës që keni paguar.'
+                  },
+                  {
+                    q: 'A ofron FindYourTender shërbime aplikimi?',
+                    a: 'Jo, ne jemi platformë informative. Platforma ju dërgon direkt te burimi zyrtar (E-Prokurimi) ku duhet të kryeni procesin e aplikimit sipas rregullave ligjore.'
+                  },
+                  {
+                    q: 'Sa shpesh përditësohen tenderët?',
+                    a: 'Sistemi ynë automatik skanon burimet zyrtare çdo 6 orë për t\'u siguruar që ju të shihni çdo shpallje të re pothuajse në kohë reale.'
+                  },
+                  {
+                    q: 'Çfarë ndodh nëse kam probleme me pagesën?',
+                    a: 'Ne përdorim Paddle si procesor pagesash. Nëse hasni ndonjë vështirësi, na shkruani dhe ekipi ynë do t\'ju ndihmojë brenda pak orëve.'
+                  }
+                ].map((item, idx) => (
+                  <details key={idx} className="group border-b border-gray-100 pb-3 last:border-0 last:pb-0">
+                    <summary className="flex items-center justify-between cursor-pointer list-none font-medium text-sm text-[#1A3A6B] hover:text-[#2D6BE4] transition-colors">
+                      <span>{item.q}</span>
+                      <span className="text-[#F0A500] transition-transform group-open:rotate-180">↓</span>
+                    </summary>
+                    <p className="mt-2 text-xs text-gray-500 leading-relaxed bg-gray-50 p-3 rounded-lg">
+                      {item.a}
+                    </p>
+                  </details>
                 ))}
               </div>
             </div>
