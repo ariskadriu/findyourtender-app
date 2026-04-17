@@ -8,7 +8,8 @@ import { differenceInDays } from 'date-fns';
 
 interface TenderCardProps {
   tender: Tender;
-    isFreePreview?: boolean;
+  blurred?: boolean;
+  isFreePreview?: boolean;
 }
 
 export default function TenderCard({ tender, blurred = false, isFreePreview = false }: TenderCardProps) {
