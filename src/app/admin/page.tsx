@@ -10,22 +10,22 @@ import { Users, FileText, DollarSign, RefreshCw, Eye, EyeOff, Star } from 'lucid
 import { User, Tender } from '@/types';
 
 export default function AdminPage() {
-  const { user, userData } = useAuth();
+  const { user, userData, loading: authLoading } = useAuth();
   const router = useRouter();
   const [stats, setStats] = useState({ totalUsers: 0, activeSubscribers: 0, totalTenders: 0, mrr: 0 });
   const [users, setUsers] = useState<User[]>([]);
   const [tenders, setTenders] = useState<Tender[]>([]);
-  const [, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [scraperLoading, setScraperLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'users' | 'tenders'>('users');
 
   useEffect(() => {
-    if (!user || userData?.role !== 'admin') {
-      router.push('/');
-      return;
+    if (user && userData?.role === 'admin') {
+      fetchAdminData();
+    } else if (!authLoading) {
+      setLoading(false);
     }
-    fetchAdminData();
-  }, [user, userData, router]);
+  }, [user, userData, authLoading]);
 
   const fetchAdminData = async () => {
     try {
@@ -88,6 +88,17 @@ export default function AdminPage() {
       setScraperLoading(false);
     }
   };
+
+  if (authLoading || (loading && user)) {
+    return (
+      <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="w-12 h-12 border-4 border-[#1A3A6B] border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="text-[#1A3A6B] font-medium">Duke kontrolluar autorizimin...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!user || userData?.role !== 'admin') {
     return (

@@ -131,6 +131,13 @@ export default function Navbar() {
                       <LayoutDashboard className="w-4 h-4" />
                       <span>{t('nav.dashboard')}</span>
                     </Link>
+                    {userData?.role === 'admin' && (
+                      <Link href="/admin" onClick={() => setUserOpen(false)}
+                        className="flex items-center space-x-2 px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
+                        <Shield className="w-4 h-4" />
+                        <span>Admin Panel</span>
+                      </Link>
+                    )}
                     <Link href="/tenders" onClick={() => setUserOpen(false)}
                       className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                       <FileText className="w-4 h-4" />
