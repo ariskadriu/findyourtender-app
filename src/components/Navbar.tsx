@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useI18n } from '@/contexts/I18nContext';
 import { Language } from '@/types';
 import Image from 'next/image';
-import { Menu, X, Globe, ChevronDown, LogOut, LayoutDashboard, FileText } from 'lucide-react';
+import { Menu, X, Globe, ChevronDown, LogOut, LayoutDashboard, FileText, Shield } from 'lucide-react';
 
 const LANGUAGES: { code: Language; label: string; flag: string }[] = [
   { code: 'sq', label: 'Shqip', flag: '🇽🇰' },
